@@ -2,6 +2,37 @@
 
 Ce module crée un cluster GKE et un node pool dans GCP, en réutilisant un VPC et un sous‑réseau existants.
 
+### Provider (entrée obligatoire)
+
+Le module **n’utilise pas de provider par défaut** : l’appelant doit lui passer le provider `google` via l’argument `providers`. Cela permet de contrôler projet, région et credentials depuis la configuration racine.
+
+### Appel avec version
+
+Ce module est versionné **séparément** : utilisez le tag dédié `gcp-gke/<version>` (voir [VERSIONING.md](../../VERSIONING.md)) :
+
+```hcl
+provider "google" {
+  project = "mon-projet"
+  region  = "europe-west1"
+}
+
+module "gke" {
+  source = "git::https://github.com/VOTRE_ORG/Terraform-module.git//GCP/gke?ref=gcp-gke/v1.0.0"
+
+  providers = {
+    google = google
+  }
+
+  project_id        = "mon-projet"
+  region            = "europe-west1"
+  network_name      = "mon-vpc"
+  subnetwork_name   = "mon-subnet"
+  cluster_name      = "mon-cluster"
+  node_count        = 3
+  node_machine_type = "e2-medium"
+}
+```
+
 ### Inputs
 
 | Name              | Description                                              | Type   | Default        | Required |
